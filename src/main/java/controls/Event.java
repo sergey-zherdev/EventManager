@@ -13,10 +13,31 @@ public class Event {
 	private LocalDate date;
 	private LocalTime time;
 	private String description;
-	private Eventable event;
+	private EventList eventType;
+	private boolean repeat;
 
 	public void setEventType(EventList event) {
-		this.event = EventsFactory.getEvent(event);
+		eventType = event;
+	}
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public LocalTime getTime() {
+		return time;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public EventList getEventType() {
+		return eventType;
+	}
+
+	public boolean isRepeat() {
+		return repeat;
 	}
 
 	public void setTime(int hour, int min) {
@@ -29,5 +50,13 @@ public class Event {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public void setRepeat(boolean repeat) {
+		this.repeat = repeat;
+	}
+
+	public boolean getRepeat() {
+		return repeat;
 	}
 }

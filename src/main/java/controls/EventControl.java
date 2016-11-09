@@ -1,6 +1,7 @@
 package controls;
 
 import events.EventList;
+import events.EventsFactory;
 import storages.Savable;
 import storages.StorageFactory;
 import storages.StorageList;
@@ -10,14 +11,14 @@ import storages.StorageList;
  */
 public class EventControl {
 	private static Savable storage;
-	//private static Event event = new Event();
+	private static Event event;
 
 	public static void setStorage(StorageList storage) {
 		EventControl.storage = StorageFactory.getStorage(storage);
 	}
 
 	public static void save(Event event) {
-		storage.save(event);
+		storage.save(EventsFactory.getEvent(event.getEventType(), event.getDate(), event.getTime(), event.getDescription(), event.getRepeat()));
 	}
 
 	public static void main(String[] args) {
@@ -26,6 +27,7 @@ public class EventControl {
 		event.setTime(12,00);
 		event.setEventType(EventList.ALARM);
 		event.setDescription("Остался месяц а ты нифига не сделал!");
+		event.setRepeat(false);
 		setStorage(StorageList.CONTAINER);
 		save(event);
 	}
