@@ -15,7 +15,7 @@ public class Event {
 	private String description;
 	private Eventable event;
 
-	public void setEvent(EventList event) {
+	public void setEventType(EventList event) {
 		this.event = EventsFactory.getEvent(event);
 	}
 
