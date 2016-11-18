@@ -19,11 +19,11 @@ public class EventsManager {
 		event.setDescription("Остался месяц а ты нифига не сделал!");
 		event.setRepeat(false);
 		setStorage(StorageList.BASE);
-		/*save(event);
+		save(event);
 		event.setDay(2016, 12, 31);
 		event.setTime(23,59);
 		event.setDescription("1 minute to NY");
-		save(event);*/
+		save(event);
 		viewAllEvents();
 	}
 }

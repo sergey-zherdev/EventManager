@@ -4,6 +4,7 @@ import controls.Event;
 import events.Eventable;
 
 import java.sql.*;
+import java.util.UUID;
 
 /**
  * Created by Сергей on 09.11.2016.
@@ -16,11 +17,10 @@ public class Base implements Savable {
 	private static final String DB_PASSWORD = "6303367sql";
 	private Connection dbConnection;
 	private String tableName = "EVENTS";
-	private static int id = 0;
 
 	public void save(Eventable event) {
 		String insertTableSQL = "INSERT INTO \"" + DB_USER + "\".\"" + tableName +
-				"\" VALUES" + "('" + id++ + "', TO_DATE('" + event.getDate() + " " + event.getTime().toString().substring(0, 8) + "', 'YYYY-MM-DD HH24:MI:SS'), '" + event.getDescription() + "')";
+				"\" VALUES" + "('" + UUID.randomUUID() + "', TO_DATE('" + event.getDate() + " " + event.getTime().toString().substring(0, 8) + "', 'YYYY-MM-DD HH24:MI:SS'), '" + event.getDescription() + "')";
 		Statement statement = null;
 		try {
 			dbConnection = getDBConnection();
