@@ -6,7 +6,7 @@ import org.joda.time.LocalTime;
 /**
  * Created by Сергей on 09.11.2016.
  */
-public abstract class AbstractEvent {
+public abstract class AbstractEvent implements Eventable {
 	LocalDate date;
 	LocalTime time;
 	String description;
@@ -22,5 +22,21 @@ public abstract class AbstractEvent {
 		this.date = date;
 		this.time = time;
 		this.description = description;
+	}
+
+	public LocalTime getTime() {
+		return time;
+	}
+
+	public LocalDate getDate() {
+		return date;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public boolean getRepeat() {
+		return repeat;
 	}
 }

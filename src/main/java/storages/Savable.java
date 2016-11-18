@@ -7,4 +7,5 @@ import events.Eventable;
  */
 public interface Savable {
 	void save(Eventable event);
+	void watchAll();
 }
