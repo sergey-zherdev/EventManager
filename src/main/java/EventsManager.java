@@ -1,6 +1,5 @@
-import controls.Event;
+import controls.EventControl;
 import events.EventList;
-import storages.Base;
 import storages.StorageList;
 
 import static controls.EventControl.save;
@@ -12,18 +11,18 @@ import static controls.EventControl.viewAllEvents;
  */
 public class EventsManager {
 	public static void main(String[] args) {
-		Event event = new Event();
+		EventControl event = new EventControl();
 		event.setDay(2016,11,15);
 		event.setTime(12,00);
 		event.setEventType(EventList.REMINDER);
 		event.setDescription("Остался месяц а ты нифига не сделал!");
 		event.setRepeat(false);
 		setStorage(StorageList.BASE);
-		save(event);
+		//save();
 		event.setDay(2016, 12, 31);
 		event.setTime(23,59);
-		event.setDescription("1 minute to NY");
-		//save(event);
+		event.setDescription("qweqwe");
+		save();
 		viewAllEvents();
 	}
 }

@@ -1,6 +1,5 @@
 package storages;
 
-import controls.Event;
 import events.Eventable;
 
 import java.sql.*;
