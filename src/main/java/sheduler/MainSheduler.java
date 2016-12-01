@@ -39,12 +39,8 @@ public class MainSheduler {
 
 		sched.scheduleJob(job, trigger);
 		sched.start();
-		try {
-			Thread.sleep(90L * 1000L);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		sched.shutdown(true);
+
+		//sched.shutdown(true);
 	}
 
 	private Trigger getTrigger(){
