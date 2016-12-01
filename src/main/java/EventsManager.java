@@ -1,5 +1,9 @@
 import controls.EventControl;
 import events.EventList;
+import events.Eventable;
+import events.EventsFactory;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
 import storages.StorageList;
 
 import static controls.EventControl.save;
@@ -11,18 +15,8 @@ import static controls.EventControl.viewAllEvents;
  */
 public class EventsManager {
 	public static void main(String[] args) {
-		EventControl event = new EventControl();
-		event.setDay(2016,11,15);
-		event.setTime(12,00);
-		event.setEventType(EventList.REMINDER);
-		event.setDescription("Остался месяц а ты нифига не сделал!");
-		event.setRepeat(false);
-		setStorage(StorageList.BASE);
-		//save();
-		event.setDay(2016, 12, 31);
-		event.setTime(23,59);
-		event.setDescription("qweqwe");
-		save();
-		viewAllEvents();
+		EventControl.setStorage(StorageList.CONTAINER);
+		//EventControl.save(EventsFactory.getEvent(EventList.ALARM, new LocalDate(2016, 11, 01), new LocalTime(17, 15), "with repeat", true));
+		EventControl.save(EventsFactory.getEvent(EventList.REMINDER, new LocalDate(2016, 11, 01), new LocalTime(17, 14), "without repeat", false));
 	}
 }

@@ -5,6 +5,7 @@ import events.Eventable;
 import events.EventsFactory;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import sheduler.MainSheduler;
 import storages.Savable;
 import storages.StorageFactory;
 import storages.StorageList;
@@ -24,30 +25,12 @@ public class EventControl {
 		EventControl.storage = StorageFactory.getStorage(storage);
 	}
 
-	public static void save() {
-		storage.save(EventsFactory.getEvent(eventType, date, time, description, repeat));
+	public static void save(Eventable event) {
+		new MainSheduler(event);
+		storage.save(event);
 	}
 	public static void viewAllEvents(){
 		storage.watchAll();
 	}
 
-	public void setEventType(EventList event) {
-		eventType = event;
-	}
-
-	public void setTime(int hour, int min) {
-		time = new LocalTime(hour, min);
-	}
-
-	public void setDay(int year, int month, int day) {
-		date = new LocalDate(year, month, day);
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public void setRepeat(boolean repeat) {
-		this.repeat = repeat;
-	}
 }
