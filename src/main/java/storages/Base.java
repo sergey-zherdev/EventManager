@@ -3,6 +3,7 @@ package storages;
 import events.Eventable;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.UUID;
 
 /**
@@ -38,24 +39,25 @@ public class Base implements Savable {
 
 	}
 
-	public void watchAll() {
+	public HashMap<String, String> watchAll() {
 		PreparedStatement statement = null;
+		ResultSet rs = null;
+		HashMap<String, String> map= new HashMap<>();
 		try {
 			dbConnection = getDBConnection();
 			statement = dbConnection.prepareStatement("SELECT * FROM EVENTS");
 
-			ResultSet rs = statement.executeQuery();
+			rs = statement.executeQuery();
 
 			while (rs.next()) {
-				String date = rs.getString("DATE_TIME");
-				String desc = rs.getString("DESCRIPTION");
-				System.out.println(date + " " + desc);
+				map.put(rs.getString("ID"),rs.getString("DATE_TIME") + " " + rs.getString("DESCRIPTION"));
 			}
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		} finally {
 			close(statement, dbConnection);
 		}
+		return map;
 	}
 
 

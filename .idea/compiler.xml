@@ -26,7 +26,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="EventManager" target="1.5" />
+      <module name="EventManager" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>
