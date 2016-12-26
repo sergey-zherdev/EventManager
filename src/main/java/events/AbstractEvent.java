@@ -7,36 +7,60 @@ import org.joda.time.LocalTime;
  * Created by Сергей on 09.11.2016.
  */
 public abstract class AbstractEvent implements Eventable {
-	LocalDate date;
-	LocalTime time;
-	String description;
-	boolean repeat;
+    LocalDate startDate;
+    LocalTime startTime;
+    LocalDate endDate;
+    LocalTime endTime;
+    String description;
+    String id;
+    boolean repeat;
 
-	public AbstractEvent(LocalDate date, LocalTime time, boolean repeat){
-		this.date = date;
-		this.time = time;
-		this.repeat = repeat;
-	}
+    public AbstractEvent(String id, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, boolean repeat) {
+        this.startDate = startDate;
+        this.id = id;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
+        this.repeat = repeat;
+    }
 
-	public AbstractEvent(LocalDate date, LocalTime time, String description) {
-		this.date = date;
-		this.time = time;
-		this.description = description;
-	}
+    public AbstractEvent(String id, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, String description) {
+        this.startDate = startDate;
+        this.id = id;
+        this.startTime = startTime;
+        this.endDate = endDate;
+        this.endTime = endTime;
+        this.description = description;
+    }
 
-	public LocalTime getTime() {
-		return time;
-	}
+    @Override
 
-	public LocalDate getDate() {
-		return date;
-	}
 
-	public String getDescription() {
-		return description;
-	}
+    public String getId() {
+        return id;
+    }
 
-	public boolean getRepeat() {
-		return repeat;
-	}
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public LocalTime getEndTime() {
+        return endTime;
+    }
+
+    public LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean getRepeat() {
+        return repeat;
+    }
 }

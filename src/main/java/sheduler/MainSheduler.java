@@ -1,11 +1,11 @@
 package sheduler;
 
 import events.Eventable;
+import org.apache.log4j.Logger;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.util.*;
-import java.util.Calendar;
 
 import static org.quartz.CronScheduleBuilder.cronSchedule;
 import static org.quartz.JobBuilder.newJob;
@@ -16,6 +16,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
  * Created by Сергей on 01.12.2016.
  */
 public class MainSheduler {
+    private static final Logger log = Logger.getLogger(MainSheduler.class);
     private Eventable event;
 
     public MainSheduler(Eventable event) {
@@ -23,7 +24,7 @@ public class MainSheduler {
         try {
             this.run();
         } catch (SchedulerException e) {
-            e.printStackTrace();
+            log.error(e);
         }
     }
 
@@ -34,7 +35,7 @@ public class MainSheduler {
         JobDetail job = newJob(ConsoleJob.class)
                 .withDescription(event.getDescription())
                 .build();
-
+        job.getJobDataMap().put("event", event);
         Trigger trigger = getTrigger();
         sched.scheduleJob(job, trigger);
         sched.start();
@@ -42,16 +43,18 @@ public class MainSheduler {
         //sched.shutdown(true);
     }
 
-    private Trigger getTrigger() {
+    private Trigger getTrigger() { //триггер считает месяцы с 0 по 11, поэтому идёт уменьшение месяца на 1
         if (event.getRepeat()) {
             return newTrigger()
-                    .startAt(new Date(new Date().getYear(), event.getDate().getMonthOfYear(), event.getDate().getDayOfMonth(), event.getTime().getHourOfDay(), event.getTime().getMinuteOfHour()))
+                    .startAt(new Date(new Date().getYear(), event.getStartDate().minusMonths(1).getMonthOfYear(), event.getStartDate().getDayOfMonth(), event.getStartTime().getHourOfDay(), event.getStartTime().getMinuteOfHour()))
                     //.withSchedule(simpleSchedule().withIntervalInHours(24).repeatForever())
-                    .withSchedule(simpleSchedule().withIntervalInSeconds(5).repeatForever())
+                    .withSchedule(simpleSchedule().withIntervalInHours(24).repeatForever())
+                    .endAt(new Date(new Date().getYear(), event.getEndDate().minusMonths(1).getMonthOfYear(), event.getEndDate().getDayOfMonth(), event.getEndTime().getHourOfDay(), event.getEndTime().getMinuteOfHour()))
                     .build();
         }
         return newTrigger()
-                .startAt(new Date(new Date().getYear(), event.getDate().getMonthOfYear(), event.getDate().getDayOfMonth(), event.getTime().getHourOfDay(), event.getTime().getMinuteOfHour()))
+                .startAt(new Date(new Date().getYear(), event.getStartDate().minusMonths(1).getMonthOfYear(), event.getStartDate().getDayOfMonth(), event.getStartTime().getHourOfDay(), event.getStartTime().getMinuteOfHour()))
+                //.endAt(new Date(new Date().getYear(), event.getStartDate().getMonthOfYear(), event.getStartDate().getDayOfMonth(), event.getStartTime().getHourOfDay(), event.getStartTime().getMinuteOfHour()))
                 .build();
     }
 }

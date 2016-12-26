@@ -3,6 +3,7 @@ package servlets;
 import controls.EventControl;
 import events.EventList;
 import events.EventsFactory;
+import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import storages.StorageList;
@@ -14,12 +15,15 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.UUID;
 
 /**
  * Created by Сергей on 19.12.2016.
  */
 @WebServlet("/create")
 public class CreateServlet extends HttpServlet {
+    private static final Logger log = Logger.getLogger(CreateServlet.class);
+
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("create.jsp").forward(req, resp);
     }
@@ -30,20 +34,22 @@ public class CreateServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         PrintWriter pw = resp.getWriter();
         try {
+            boolean repeat = false;
             EventList eventType;
-            LocalDate date =  new LocalDate(req.getParameter("Date")).minusMonths(1);
-            LocalTime time =new LocalTime(req.getParameter("Time"));
+            LocalDate startDate = new LocalDate(req.getParameter("startDate"));
+            LocalTime startTime = new LocalTime(req.getParameter("startTime"));
+            LocalDate endDate = new LocalDate(req.getParameter("endDate"));
+            LocalTime endTime = new LocalTime(req.getParameter("endTime"));
             String desc = req.getParameter("Description");
-            EventControl.setStorage(StorageList.BASE);
-            if("Alarm".equals(req.getParameter("possible-result")))
+            if ("ALARM".equals(req.getParameter("possible"))) {
                 eventType = EventList.ALARM;
-            else
+                repeat = true;
+            } else
                 eventType = EventList.REMINDER;
-            EventControl.save(EventsFactory.getEvent(eventType, date, time, desc, false));
+            EventControl.save(EventsFactory.getEvent(String.valueOf(UUID.randomUUID()), eventType, startDate, startTime, endDate, endTime, desc, repeat));
             pw.println("<h1>OK</h1>");
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
+            log.error(e);
             pw.println();
         }
     }

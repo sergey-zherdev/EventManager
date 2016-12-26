@@ -10,4 +10,6 @@ import java.util.HashMap;
 public interface Savable {
 	void save(Eventable event);
 	HashMap<String, String> watchAll();
+
+    void toArchive(Eventable event);
 }

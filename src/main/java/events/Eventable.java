@@ -8,11 +8,15 @@ import org.joda.time.LocalTime;
  */
 public interface Eventable {
 	void run();
-	LocalTime getTime();
-	LocalDate getDate();
+	LocalTime getStartTime();
+	LocalDate getStartDate();
+	LocalTime getEndTime();
+	LocalDate getEndDate();
 	String getDescription();
+	String getId();
 
 	boolean getRepeat();
 
 	EventList getEventType();
+
 }

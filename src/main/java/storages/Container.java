@@ -16,4 +16,9 @@ public class Container implements Savable{
 	public HashMap<String, String> watchAll() {
 		return null;
 	}
+
+	@Override
+	public void toArchive(Eventable event) {
+
+	}
 }

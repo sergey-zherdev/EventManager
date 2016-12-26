@@ -1,5 +1,8 @@
 package servlets;
 
+import controls.EventControl;
+import storages.StorageList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -21,5 +24,11 @@ public class MainServlet extends HttpServlet{
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         super.doPost(req, resp);
 
+    }
+
+    @Override
+    public void init() throws ServletException {
+        EventControl.setStorage(StorageList.BASE);
+        EventControl.setup();
     }
 }

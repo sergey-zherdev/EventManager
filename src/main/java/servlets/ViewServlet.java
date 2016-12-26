@@ -21,7 +21,6 @@ public class ViewServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter pw = resp.getWriter();
-        EventControl.setStorage(StorageList.BASE);
 
         Map<String, String> map = EventControl.getAllEvents();
         req.setCharacterEncoding("UTF-8");
