@@ -24,6 +24,7 @@ public class MainSheduler {
         try {
             this.run();
         } catch (SchedulerException e) {
+            e.printStackTrace();
             log.error(e);
         }
     }
@@ -32,23 +33,24 @@ public class MainSheduler {
         SchedulerFactory sf = new StdSchedulerFactory();
         Scheduler sched = sf.getScheduler();
 
-        JobDetail job = newJob(ConsoleJob.class)
-                .withDescription(event.getDescription())
-                .build();
-        job.getJobDataMap().put("event", event);
-        Trigger trigger = getTrigger();
-        sched.scheduleJob(job, trigger);
+            JobDetail job = newJob(MainJob.class)
+                    .withDescription(event.getDescription())
+                    .build();
+            job.getJobDataMap().put("event", event);
+            sched.scheduleJob(job, getTrigger(event));
+
         sched.start();
+
 
         //sched.shutdown(true);
     }
 
-    private Trigger getTrigger() { //триггер считает месяцы с 0 по 11, поэтому идёт уменьшение месяца на 1
+    private Trigger getTrigger(Eventable event) { //триггер считает месяцы с 0 по 11, поэтому идёт уменьшение месяца на 1
         if (event.getRepeat()) {
             return newTrigger()
                     .startAt(new Date(new Date().getYear(), event.getStartDate().minusMonths(1).getMonthOfYear(), event.getStartDate().getDayOfMonth(), event.getStartTime().getHourOfDay(), event.getStartTime().getMinuteOfHour()))
+                    .withSchedule(simpleSchedule().withIntervalInSeconds(event.getRepeatTime()).repeatForever())
                     //.withSchedule(simpleSchedule().withIntervalInHours(24).repeatForever())
-                    .withSchedule(simpleSchedule().withIntervalInHours(24).repeatForever())
                     .endAt(new Date(new Date().getYear(), event.getEndDate().minusMonths(1).getMonthOfYear(), event.getEndDate().getDayOfMonth(), event.getEndTime().getHourOfDay(), event.getEndTime().getMinuteOfHour()))
                     .build();
         }

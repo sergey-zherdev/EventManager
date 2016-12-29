@@ -2,6 +2,7 @@ package servlets;
 
 import controls.EventControl;
 import events.EventList;
+import events.Eventable;
 import events.EventsFactory;
 import org.apache.log4j.Logger;
 import org.joda.time.LocalDate;
@@ -34,23 +35,52 @@ public class CreateServlet extends HttpServlet {
         resp.setCharacterEncoding("UTF-8");
         PrintWriter pw = resp.getWriter();
         try {
-            boolean repeat = false;
-            EventList eventType;
-            LocalDate startDate = new LocalDate(req.getParameter("startDate"));
-            LocalTime startTime = new LocalTime(req.getParameter("startTime"));
-            LocalDate endDate = new LocalDate(req.getParameter("endDate"));
-            LocalTime endTime = new LocalTime(req.getParameter("endTime"));
-            String desc = req.getParameter("Description");
-            if ("ALARM".equals(req.getParameter("possible"))) {
-                eventType = EventList.ALARM;
-                repeat = true;
-            } else
-                eventType = EventList.REMINDER;
-            EventControl.save(EventsFactory.getEvent(String.valueOf(UUID.randomUUID()), eventType, startDate, startTime, endDate, endTime, desc, repeat));
+
+            EventControl.save(getEvent(req));
             pw.println("<h1>OK</h1>");
         } catch (Exception e) {
             log.error(e);
-            pw.println();
+            pw.println("<h1>ERROR</h1>");
         }
+    }
+
+    private Eventable getEvent(HttpServletRequest req) {
+        System.err.println(req.getParameter("messageType"));
+        System.err.println(req.getParameter("messageType1"));
+        boolean repeat = false;
+        EventList eventType = null;
+        LocalDate startDate = new LocalDate(req.getParameter("startDate"));
+        LocalTime startTime = new LocalTime(req.getParameter("startTime"));
+        LocalDate endDate = null;
+        String desc = null;
+        int repeatTime = 0;
+        LocalTime endTime = null;
+        if ("ALARM".equals(req.getParameter("possible"))) {
+            eventType = EventList.ALARM;
+            endDate = new LocalDate(req.getParameter("endDate"));
+            endTime = new LocalTime(req.getParameter("endTime"));
+            desc = "ALARM";
+            repeat = true;
+            repeatTime = Integer.parseInt(req.getParameter("repeatTime"));
+        } else {
+            eventType = EventList.REMINDER;
+            endDate = startDate;
+            endTime = startTime;
+            desc = req.getParameter("Description");
+        }
+
+        boolean message = false;
+        boolean console = false;
+        String address = null;
+        if (null != req.getParameter("Console")) {
+            console = true;
+        }
+        if (null != req.getParameter("Message")) {
+            message = true;
+            address = req.getParameter("address");
+        }
+
+
+        return EventsFactory.getEvent(String.valueOf(UUID.randomUUID()), eventType, startDate, startTime, endDate, endTime, desc, repeat, repeatTime, console, message, address);
     }
 }

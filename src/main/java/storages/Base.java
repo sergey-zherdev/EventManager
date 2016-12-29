@@ -10,7 +10,6 @@ import org.joda.time.LocalTime;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by Сергей on 09.11.2016.
@@ -30,7 +29,7 @@ public class Base implements Savable {
         PreparedStatement statement = null;
         try {
             dbConnection = getDBConnection();
-            statement = dbConnection.prepareStatement("INSERT INTO \"SYSTEM\".\"EVENTS\" (ID, START_DATE_TIME, DESCRIPTION, END_DATE_TIME, STATE, EVENT_TYPE, REPEAT) VALUES(?, TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'), ?, TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'), ?, ?, ?)");
+            statement = dbConnection.prepareStatement("INSERT INTO \"SYSTEM\".\"EVENTS\" (ID, START_DATE_TIME, DESCRIPTION, END_DATE_TIME, STATE, EVENT_TYPE, REPEAT, REPEAT_TIME, CONSOLE, MESSAGE, ADDRESS) VALUES(?, TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'), ?, TO_DATE(?, 'YYYY-MM-DD HH24:MI:SS'), ?, ?, ?, ?, ?, ?, ?)");
             statement.setString(1, event.getId());
             String dateStartString = event.getStartDate() + " " + event.getStartTime().toString().substring(0, 8);
             statement.setString(2, dateStartString);
@@ -40,6 +39,10 @@ public class Base implements Savable {
             statement.setString(5, "work");
             statement.setString(6, String.valueOf(event.getEventType()));
             statement.setBoolean(7, event.getRepeat());
+            statement.setInt(8, event.getRepeatTime());
+            statement.setBoolean(9, event.isConsole());
+            statement.setBoolean(10, event.isMessage());
+            statement.setString(11, event.getAddress());
 
             statement.execute();
         } catch (SQLException e) {
@@ -177,8 +180,11 @@ public class Base implements Savable {
                 String descr = rs.getString("DESCRIPTION");
 
                 boolean repeat = rs.getBoolean("REPEAT");
-
-                Eventable event = EventsFactory.getEvent(id, eventType, startDate, startTime, endDate, endTime, descr, repeat);
+                boolean console = rs.getBoolean("CONSOLE");
+                boolean message = rs.getBoolean("MESSAGE");
+                int repeatTime = rs.getInt("REPEAT_TIME");
+                String address = rs.getString("ADDRESS");
+                Eventable event = EventsFactory.getEvent(id, eventType, startDate, startTime, endDate, endTime, descr, repeat, repeatTime, console, message, address);
                 map.put(id, event);
             }
         } catch (SQLException e) {

@@ -4,20 +4,16 @@ package events;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
+import java.util.Date;
+
 /**
  * Created by Сергей on 09.11.2016.
  */
 public class Alarm extends AbstractEvent {
 
-    public Alarm(String id, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, boolean repeat) {
-        super(id, startDate, startTime, endDate, endTime, repeat);
-        description = "ALARM!!!";
+    public Alarm(String id, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, String description, boolean repeat, int repeatTime, boolean console, boolean message, String address) {
+        super(id, startDate, startTime, endDate, endTime, description, repeat, repeatTime, console, message, address);
     }
-
-    public void run() {
-
-    }
-
     public EventList getEventType() {
         return EventList.ALARM;
     }

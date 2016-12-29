@@ -14,23 +14,23 @@ public abstract class AbstractEvent implements Eventable {
     String description;
     String id;
     boolean repeat;
+    boolean console;
+    boolean message;
+    int repeatTime;
+    String address;
 
-    public AbstractEvent(String id, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, boolean repeat) {
-        this.startDate = startDate;
-        this.id = id;
-        this.startTime = startTime;
-        this.endDate = endDate;
-        this.endTime = endTime;
-        this.repeat = repeat;
-    }
-
-    public AbstractEvent(String id, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, String description) {
+    public AbstractEvent(String id, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, String description, boolean repeat, int repeatTime, boolean console, boolean message, String address) {
         this.startDate = startDate;
         this.id = id;
         this.startTime = startTime;
         this.endDate = endDate;
         this.endTime = endTime;
         this.description = description;
+        this.console = console;
+        this.message = message;
+        this.repeatTime = repeatTime;
+        this.repeat = repeat;
+        this.address = address;
     }
 
     @Override
@@ -60,7 +60,23 @@ public abstract class AbstractEvent implements Eventable {
         return description;
     }
 
+    public boolean isConsole() {
+        return console;
+    }
+
+    public boolean isMessage() {
+        return message;
+    }
+
+    public int getRepeatTime() {
+        return repeatTime;
+    }
+
     public boolean getRepeat() {
         return repeat;
+    }
+
+    public String getAddress() {
+        return address;
     }
 }
