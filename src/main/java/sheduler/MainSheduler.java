@@ -49,8 +49,8 @@ public class MainSheduler {
         if (event.getRepeat()) {
             return newTrigger()
                     .startAt(new Date(new Date().getYear(), event.getStartDate().minusMonths(1).getMonthOfYear(), event.getStartDate().getDayOfMonth(), event.getStartTime().getHourOfDay(), event.getStartTime().getMinuteOfHour()))
-                    .withSchedule(simpleSchedule().withIntervalInSeconds(event.getRepeatTime()).repeatForever())
-                    //.withSchedule(simpleSchedule().withIntervalInHours(24).repeatForever())
+                    //.withSchedule(simpleSchedule().withIntervalInSeconds(event.getRepeatTime()).repeatForever())
+                    .withSchedule(simpleSchedule().withIntervalInHours(event.getRepeatTime()).repeatForever())
                     .endAt(new Date(new Date().getYear(), event.getEndDate().minusMonths(1).getMonthOfYear(), event.getEndDate().getDayOfMonth(), event.getEndTime().getHourOfDay(), event.getEndTime().getMinuteOfHour()))
                     .build();
         }
